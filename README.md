@@ -3,9 +3,9 @@ Rails Developer Foundation
 
 ## 系統需求
 
-* Ruby 3.1.3
+* Ruby 3.2.2
 * PostgreSQL 14+
-* Node.js 16+
+* Node.js 18+
 
 ## 環境設定
 
@@ -37,10 +37,10 @@ brew install rvm
 
 ```bash
 # 選用 rbenv
-rbenv install 3.1.3
+rbenv install 3.2.2
 
 # 選用 rvm
-rvm install 3.1.3
+rvm install 3.2.2
 ```
 
 完成後需要先將 Bundler 安裝到新安裝的 Ruby 環境中（rvm 可能會先預裝完畢）
@@ -48,7 +48,7 @@ rvm install 3.1.3
 ```bash
 # 先確認是否在正確的 Ruby 版本執行
 ruby -v
-# => ruby 2.5.3p105 (2018-10-18 revision 65156) [x86_64-darwin17]
+# => ruby 3.2.2 (2023-03-30 revision e51014f9c0) [x86_64-darwin22]
 
 gem install bundler
 ```
