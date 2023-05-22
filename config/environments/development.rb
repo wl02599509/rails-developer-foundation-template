@@ -7,7 +7,7 @@ Rails.application.configure do
   config.annotations.register_directories('features')
   config.annotations.register_extensions('feature') { |tag| /#\s*(#{tag}):?\s*(.*)$/ }
 
-  config.hosts << '.test'
+  config.hosts += %w[.trycloudflare.com]
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
