@@ -14,6 +14,11 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command:
+          - rubocop
+          - brakeman
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -22,12 +27,15 @@ jobs:
       with:
         ruby-version: ${{ env.ruby-version }}
         bundler-cache: true
-    - name: Rubocop
-      run: bundle exec rubocop
-    - name: Brakeman
-      run: bundle exec brakeman
-  rspec:
+    - name: ${{ matrix.command }}
+      run: bundle exec ${{ matrix.command }}
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command:
+          - rspec
+          - cucumber
     services:
       postgres:
         image: postgres:14-alpine
@@ -50,52 +58,15 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'yarn'
-      - name: Prepare Test Environment
+      - name: Prepare test environment
         run: |
           bundle install
           yarn install
           bundle exec rake test:prepare
           bundle exec rake db:migrate
-
-      - name: Run Tests
-        run: bundle exec rspec
-  cucumber:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:14-alpine
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: rails-developer-foundation
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
-      - name: Prepare Test Environment
-        run: |
-          bundle install
-          yarn install
-          bundle exec rake test:prepare
-          bundle exec rake db:migrate
-      - name: Run Tests
-        run: bundle exec cucumber
+      - name: ${{ matrix.command }}
+        run: bundle exec ${{ matrix.command }}
