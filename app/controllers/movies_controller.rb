@@ -2,12 +2,11 @@
 
 class MoviesController < ApplicationController
   def index
-    @movies = ['1. SANKYO PRESENTS WALKURE FINAL LIVE TOUR 現場直播',
-               '2. 小美人魚',
-               '3. 玩命關頭X']
+    @movies = Movie.all
   end
 
   def search
-    @resoult = '1. 小美人魚'
+    @result = Movie.recent if params[:search] == '最近 1'
+    @result = Movie.latest if params[:search] == '最新 1'
   end
 end
