@@ -21,11 +21,11 @@ class Movie
         .take(1)
     end
 
-    def latest
+    def latest(num)
       items
         .sort_by(&:date)
         .reverse
-        .take(1)
+        .take(num)
     end
 
     def clear
