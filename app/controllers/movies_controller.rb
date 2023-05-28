@@ -6,4 +6,8 @@ class MoviesController < ApplicationController
                '2. 小美人魚',
                '3. 玩命關頭X']
   end
+
+  def search
+    @resoult = '1. 小美人魚'
+  end
 end
