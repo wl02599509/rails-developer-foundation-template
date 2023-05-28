@@ -1,23 +1,43 @@
 # frozen_string_literal: true
 
 class Movie
+  class << self
+    def items
+      @items ||= []
+    end
+
+    def create!(**attributes)
+      items << new(
+        name: attributes['name'],
+        date: attributes['date']
+      )
+    end
+
+    def recent
+      items
+        .select { |movie| Time.zone.now >= movie.date }
+        .sort_by(&:date)
+        .reverse
+        .take(1)
+    end
+
+    def latest
+      items
+        .sort_by(&:date)
+        .reverse
+        .take(1)
+    end
+
+    def clear
+      @items = []
+    end
+
+    alias all items
+  end
+
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  def self.all
-    ['1. SANKYO PRESENTS WALKURE FINAL LIVE TOUR 現場直播',
-     '2. 小美人魚',
-     '3. 玩命關頭X']
-  end
-
-  def self.recent
-    '1. 小美人魚'
-  end
-
-  def self.latest
-    '1. 變形金剛：萬獸崛起'
-  end
-
   attribute :name
-  attribute :datetime
+  attribute :date, :date
 end

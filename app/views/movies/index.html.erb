@@ -1,11 +1,11 @@
-<ul>
-<% @movies.each do |movie| %>
-<li><%= movie %></li>
+<%= form_with(url: movies_path, method: :get) do |f| %>
+  <%= f.label :search %>
+  <%= f.text_field :search %>
+  <%= f.submit '查詢' %>
 <% end %>
-</ul>
 
-<%= form_tag('/movies/search', method: 'get') do %>
-<%= label_tag :search %>
-<%= text_field_tag :search %>
-<%= submit_tag '查詢' %>
-<% end %>
+<div>
+  <% @movies.each_with_index do |movie, idx| %>
+    <p><%= idx + 1 %>. <%= movie.name %></p>
+  <% end %>
+</div>
